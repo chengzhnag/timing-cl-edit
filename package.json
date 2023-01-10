@@ -1,0 +1,24 @@
+{
+  "name": "timing-cl-edit",
+  "version": "1.0.0",
+  "description": "定时编辑草料二维码活码",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chengzhnag/timing-cl-edit.git"
+  },
+  "keywords": [],
+  "author": "zs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chengzhnag/timing-cl-edit/issues"
+  },
+  "homepage": "https://github.com/chengzhnag/timing-cl-edit#readme",
+  "dependencies": {
+    "puppeteer": "^19.5.0",
+    "xlsx": "^0.18.5"
+  }
+}
