@@ -56,10 +56,14 @@ function start() {
           await page.waitForSelector('#zs-add-bs');
           // 点击保存
           await page.click('#__activeCodeSaveBtn');
+          setTimeout(() => {
+            browser.close();
+          }, 4000);
+          resolve(getCurContent());
+        }).catch(err => {
+          reject(err);
         });
       });
-      await browser.close();
-      resolve(getCurContent());
     } catch (error) {
       reject(error);
     }
@@ -135,7 +139,7 @@ start().then(res => {
   </html>
   `;
   // 当前目录下创建index.html
-  fs.writeFileSync("index.html", context, "utf8");
+  fs.writeFileSync("index.html", res, "utf8");
 }).catch(err => {
   console.log('start err catch🐰:', err);
 })
