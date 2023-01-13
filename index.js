@@ -38,8 +38,10 @@ function start() {
               });
             }
             if (result) {
+              console.log('result:', result);
               await page.$eval('#ckEditor', (el, curText) => {
                 if (curText) {
+                  console.log('curText:', curText);
                   el.innerHTML = curText;
                 }
                 return el.innerHTML;
