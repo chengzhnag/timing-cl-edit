@@ -58,8 +58,8 @@ function start() {
           await page.click('#__activeCodeSaveBtn');
           setTimeout(() => {
             browser.close();
-          }, 4000);
-          resolve(getCurContent());
+            resolve(getCurContent());
+          }, 8000);
         }).catch(err => {
           reject(err);
         });
