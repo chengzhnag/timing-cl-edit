@@ -57,6 +57,8 @@ function start() {
           await setContent();
           // 检测到自己增加的id
           await page.waitForSelector('#zs-add-bs');
+          const result = await page.$eval('#ckEditor', el => el.innerHTML);
+          console.log('result22:', result);
           // 点击保存
           await page.click('#__activeCodeSaveBtn');
           setTimeout(() => {
@@ -80,9 +82,11 @@ function getCurContent() {
   const item = list.find(i => i.date === date);
   if (item) {
     return `
-    <p id='zs-add-bs'><span style='font-size:17px;margin-left:20px;'>${item.date}</span></p>
-    <br />
-    <p style='font-size:17px;'>作业日期码为：${item.code}</p>
+    <div>
+      <p id="zs-add-bs"><span style="font-size:17px;margin-left:20px;">${item.date}</span></p>
+      <br />
+      <p style="font-size:17px;">作业日期码为：${item.code}</p>
+    </div>
     `;
   }
   return '';
@@ -142,7 +146,7 @@ start().then(res => {
   </html>
   `;
   // 当前目录下创建index.html
-  fs.writeFileSync("index.html", res, "utf8");
+  fs.writeFileSync("index.html", context, "utf8");
 }).catch(err => {
   console.log('start err catch🐰:', err);
 })
