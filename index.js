@@ -59,11 +59,13 @@ function start() {
           await page.waitForSelector('#zs-add-bs');
           const result = await page.$eval('#ckEditor', el => el.innerHTML);
           console.log('result22:', result);
-          console.log('content123:', await page.content());
+          cosnt content1 = await page.content();
+          console.log('content123:', content1);
           // 点击保存
           await page.click('#__activeCodeSaveBtn');
+          cosnt content2 = await page.content();
+          console.log('content456:', content2);
           setTimeout(() => {
-            console.log('content456:', await page.content());
             browser.close();
             resolve(getCurContent());
           }, 8000);
