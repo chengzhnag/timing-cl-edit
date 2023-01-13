@@ -40,6 +40,7 @@ function start() {
             if (result) {
               console.log('result:', result);
               await page.$eval('#ckEditor', (el, curText) => {
+                console.log({innerHtml: el.innerHTML, curText});
                 if (curText) {
                   console.log('curText:', curText);
                   el.innerHTML = curText;
