@@ -97,9 +97,9 @@ function getCurContent() {
   if (item) {
     return `
     <div>
-      <p id="zs-add-bs"><span style="font-size:17px;margin-left:20px;">${item.date}</span></p>
+      <p id="zs-add-bs"><span style="font-size:24px;margin-left:30px;">${item.date}</span></p>
       <br />
-      <p style="font-size:17px;">作业日期码为：${item.code}</p>
+      <p style="font-size:24px;">作业日期码为：${item.code}</p>
     </div>
     `;
   }
