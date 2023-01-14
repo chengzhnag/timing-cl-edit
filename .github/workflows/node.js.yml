@@ -8,7 +8,7 @@ on:
   # workflow_dispatch:
   # 定时器
   schedule: 
-    - cron: '20 11 * * *'
+    - cron: '0 3 * * *'
 
 jobs:
   build:
