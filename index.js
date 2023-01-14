@@ -59,16 +59,14 @@ function start() {
           await page.waitForSelector('#zs-add-bs');
           const result = await page.$eval('#ckEditor', el => el.innerHTML);
           console.log('result22:', result);
-          const content1 = await page.content();
-          console.log('content123:', content1);
+          const saveRes = await page.$eval('#__activeCodeSaveBtn', el => el.innerHTML);
+          console.log('saveRes:', saveRes);
           // 点击保存
           await page.click('#__activeCodeSaveBtn');
-          const content2 = await page.content();
-          console.log('content456:', content2);
           setTimeout(() => {
             browser.close();
             resolve(getCurContent());
-          }, 8000);
+          }, 16000);
         }).catch(err => {
           reject(err);
         });
@@ -139,11 +137,14 @@ function parseTime(time, cFormat = '{y}-{m}-{d}') {
 
 start().then(res => {
   console.log('🦋🦋🦋🦋', res);
-  let context = `
-  <html>
-   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-   </head>
+  let context = `<!DOCTYPE html>
+  <html lang="zh">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+      <meta name="format-detection" content="telephone=no" />
+      <meta name="referrer" content="no-referrer" />
+    </head>
     <body>
       ${res}
     </body>
