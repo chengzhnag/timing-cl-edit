@@ -30,7 +30,7 @@ jobs:
     - name: npm install
       run: npm install
     
-    - name: Get Status
+    - name: Edit Content
       run: npm start
       env:
           ACCOUNT: ${{ secrets.ACCOUNT }}
@@ -46,7 +46,6 @@ jobs:
         username: ${{secrets.MAIL_USERNAME}}
         password: ${{secrets.MAIL_PASSWORD}}
         subject: 草料二维码修改通知
-        body: file://index.html
+        html_body: file://index.html
         to: 1772591173@qq.com
         from: GitHub Actions
-        content_type: text/html
