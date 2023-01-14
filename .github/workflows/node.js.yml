@@ -8,7 +8,7 @@ on:
   # workflow_dispatch:
   # 定时器
   schedule: 
-    - cron: '0 3,4 * * *'
+    - cron: '0 22 * * *'
 
 jobs:
   build:
@@ -47,5 +47,5 @@ jobs:
         password: ${{secrets.MAIL_PASSWORD}}
         subject: 草料二维码修改通知
         html_body: file://index.html
-        to: 1772591173@qq.com,1905887565@qq.com
+        to: 1772591173@qq.com,1905887565@qq.com,504058652@qq.com
         from: GitHub Actions
