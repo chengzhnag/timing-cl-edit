@@ -59,10 +59,13 @@ function start() {
           await page.waitForSelector('#zs-add-bs');
           const result = await page.$eval('#ckEditor', el => el.innerHTML);
           console.log('result22:', result);
-          const saveRes = await page.$eval('#__activeCodeSaveBtn', el => el.innerHTML);
+          const saveRes = await page.$eval('#__activeCodeSaveBtn', el => {
+            el.click();
+            return el.innerHTML;
+          });
           console.log('saveRes:', saveRes);
           // 点击保存
-          await page.click('#__activeCodeSaveBtn');
+          // await page.click('#__activeCodeSaveBtn');
           setTimeout(() => {
             browser.close();
             resolve(getCurContent());
@@ -70,6 +73,15 @@ function start() {
         }).catch(err => {
           reject(err);
         });
+      });
+      page.on('response', async e => {
+        const url = e.url();
+        if (url.includes('operateQrcodeMsg')) {
+//           const text = await e.text();
+//           console.log('text:', text);
+          const json = await e.json();
+          console.log('json:', json);
+        }
       });
     } catch (error) {
       reject(error);
