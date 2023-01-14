@@ -9,7 +9,7 @@ function start() {
       const browser = await puppeteer.launch({ headless: !isDebugger });
       const page = await browser.newPage();
       await page.setViewport({ width: 1920, height: 1080 });
-      await page.goto('https://console.cli.im/nedit/146378806?categoryId=32383517&pageFrom=center&c=qhlKyqL');
+      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2');
       // 等待登录页面#captcha-form存在
       await page.waitForSelector('#common-login-content');
 
