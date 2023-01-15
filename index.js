@@ -90,8 +90,10 @@ function start() {
 }
 
 function getCurContent() {
-  const date = parseTime(new Date());
-  const year = new Date().getFullYear();
+  // github服务器执行比北京时间晚8小时，加上延迟半小时
+  const d = new Date().getTime() + 60*60*8.5*1000;
+  const date = parseTime(new Date(d));
+  const year = new Date(d).getFullYear();
   const list = codeData[year] || [];
   const item = list.find(i => i.date === date);
   if (item) {
