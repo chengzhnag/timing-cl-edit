@@ -7,9 +7,12 @@ function start() {
   return new Promise(async (resolve, reject) => {
     try {
       const browser = await puppeteer.launch({ headless: !isDebugger });
+      console.log('10☔︎');
       const page = await browser.newPage();
       await page.setViewport({ width: 1920, height: 1080 });
-      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2');
+      console.log('13☔︎');
+      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2', {timeout: 0});
+      console.log('15☔︎');
       // 等待登录页面#captcha-form存在
       await page.waitForSelector('#common-login-content');
 
@@ -19,6 +22,7 @@ function start() {
       await page.type('#loginpassword', process.env.PASSWORD, { delay: 100 });
       // 点击登录按钮
       await page.click('#login-btn');
+      console.log('25☔︎');
       await page.once('load', () => {
         // reload是因为有个弹窗显示错误，点击确认一样的重新加载页面
         page.reload().then(async () => {
