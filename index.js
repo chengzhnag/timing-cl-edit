@@ -24,12 +24,15 @@ function start() {
       await page.click('#login-btn');
       console.log('25☔︎');
       await page.once('load', () => {
+        console.log('27☔︎');
         // reload是因为有个弹窗显示错误，点击确认一样的重新加载页面
         page.reload().then(async () => {
+          console.log('30☔︎');
           await page.waitForSelector('#ckEditor');
-
+          console.log('32☔︎');
           async function setContent() {
             const result = await page.$eval('#ckEditor', el => el.innerHTML);
+            console.log('35☔︎');
             const maskEle = await page.$('.ant-modal-mask');
             // 移除警告弹窗
             if (maskEle) {
@@ -51,6 +54,7 @@ function start() {
                 }
                 return el.innerHTML;
               }, getCurContent());
+              console.log('57☔︎');
             } else {
               setTimeout(async () => {
                 await setContent();
@@ -59,8 +63,10 @@ function start() {
           }
           // 修改富文本编辑器内容
           await setContent();
+          console.log('65☔︎');
           // 检测到自己增加的id
           await page.waitForSelector('#zs-add-bs');
+          console.log('66☔︎');
           const result = await page.$eval('#ckEditor', el => el.innerHTML);
           console.log('result22:', result);
           const saveRes = await page.$eval('#__activeCodeSaveBtn', el => {
@@ -71,6 +77,7 @@ function start() {
           // 点击保存
           // await page.click('#__activeCodeSaveBtn');
           setTimeout(() => {
+            console.log('77☔︎');
             browser.close();
             resolve(getCurContent());
           }, 16000);
