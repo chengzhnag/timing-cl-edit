@@ -11,7 +11,7 @@ function start() {
       const page = await browser.newPage();
       await page.setViewport({ width: 1920, height: 1080 });
       console.log('13☔︎');
-      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2', {timeout: 0});
+      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2', { timeout: 0 });
       console.log('15☔︎');
       // 等待登录页面#captcha-form存在
       await page.waitForSelector('#common-login-content');
@@ -23,73 +23,72 @@ function start() {
       // 点击登录按钮
       await page.click('#login-btn');
       console.log('25☔︎');
-      await page.once('load', () => {
-        console.log('27☔︎');
-        // reload是因为有个弹窗显示错误，点击确认一样的重新加载页面
-        page.reload().then(async () => {
-          console.log('30☔︎');
-          await page.waitForSelector('#ckEditor');
-          console.log('32☔︎');
-          async function setContent() {
-            const result = await page.$eval('#ckEditor', el => el.innerHTML);
-            console.log('35☔︎');
-            const maskEle = await page.$('.ant-modal-mask');
-            // 移除警告弹窗
-            if (maskEle) {
-              console.log('has maskEle:');
-              await page.$eval('.ant-modal-mask', el => {
-                if (el.parentNode) {
-                  el.parentNode.remove();
-                }
-                return el;
-              });
-            }
-            if (result) {
-              console.log('result:', result);
-              await page.$eval('#ckEditor', (el, curText) => {
-                console.log({innerHtml: el.innerHTML, curText});
-                if (curText) {
-                  console.log('curText:', curText);
-                  el.innerHTML = curText;
-                }
-                return el.innerHTML;
-              }, getCurContent());
-              console.log('57☔︎');
-            } else {
-              setTimeout(async () => {
-                await setContent();
-              }, 1000)
-            }
-          }
-          // 修改富文本编辑器内容
-          await setContent();
-          console.log('65☔︎');
-          // 检测到自己增加的id
-          await page.waitForSelector('#zs-add-bs');
-          console.log('66☔︎');
+      await page.waitForNavigation();
+      console.log('27☔︎');
+      // reload是因为有个弹窗显示错误，点击确认一样的重新加载页面
+      page.reload().then(async () => {
+        console.log('30☔︎');
+        await page.waitForSelector('#ckEditor');
+        console.log('32☔︎');
+        async function setContent() {
           const result = await page.$eval('#ckEditor', el => el.innerHTML);
-          console.log('result22:', result);
-          const saveRes = await page.$eval('#__activeCodeSaveBtn', el => {
-            el.click();
-            return el.innerHTML;
-          });
-          console.log('saveRes:', saveRes);
-          // 点击保存
-          // await page.click('#__activeCodeSaveBtn');
-          setTimeout(() => {
-            console.log('77☔︎');
-            browser.close();
-            resolve(getCurContent());
-          }, 16000);
-        }).catch(err => {
-          reject(err);
+          console.log('35☔︎');
+          const maskEle = await page.$('.ant-modal-mask');
+          // 移除警告弹窗
+          if (maskEle) {
+            console.log('has maskEle:');
+            await page.$eval('.ant-modal-mask', el => {
+              if (el.parentNode) {
+                el.parentNode.remove();
+              }
+              return el;
+            });
+          }
+          if (result) {
+            console.log('result:', result);
+            await page.$eval('#ckEditor', (el, curText) => {
+              console.log({ innerHtml: el.innerHTML, curText });
+              if (curText) {
+                console.log('curText:', curText);
+                el.innerHTML = curText;
+              }
+              return el.innerHTML;
+            }, getCurContent());
+            console.log('57☔︎');
+          } else {
+            setTimeout(async () => {
+              await setContent();
+            }, 1000)
+          }
+        }
+        // 修改富文本编辑器内容
+        await setContent();
+        console.log('65☔︎');
+        // 检测到自己增加的id
+        await page.waitForSelector('#zs-add-bs');
+        console.log('66☔︎');
+        const result = await page.$eval('#ckEditor', el => el.innerHTML);
+        console.log('result22:', result);
+        const saveRes = await page.$eval('#__activeCodeSaveBtn', el => {
+          el.click();
+          return el.innerHTML;
         });
+        console.log('saveRes:', saveRes);
+        // 点击保存
+        // await page.click('#__activeCodeSaveBtn');
+        setTimeout(() => {
+          console.log('77☔︎');
+          browser.close();
+          resolve(getCurContent());
+        }, 16000);
+      }).catch(err => {
+        reject(err);
       });
       page.on('response', async e => {
         const url = e.url();
         if (url.includes('operateQrcodeMsg')) {
-//           const text = await e.text();
-//           console.log('text:', text);
+          //           const text = await e.text();
+          //           console.log('text:', text);
           const json = await e.json();
           console.log('json:', json);
         }
@@ -102,7 +101,7 @@ function start() {
 
 function getCurContent() {
   // github服务器执行比北京时间晚8小时，加上延迟半小时
-  const d = new Date().getTime() + 60*60*8.5*1000;
+  const d = new Date().getTime() + 60 * 60 * 8.5 * 1000;
   const date = parseTime(new Date(d));
   const year = new Date(d).getFullYear();
   const list = codeData[year] || [];
