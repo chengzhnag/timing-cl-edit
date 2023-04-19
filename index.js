@@ -26,64 +26,7 @@ function start() {
       await page.waitForNavigation();
       console.log('27☔︎');
       // reload是因为有个弹窗显示错误，点击确认一样的重新加载页面
-      page.reload().then(async () => {
-        console.log('30☔︎');
-        await page.waitForSelector('#ckEditor');
-        console.log('32☔︎');
-        async function setContent() {
-          const result = await page.$eval('#ckEditor', el => el.innerHTML);
-          console.log('35☔︎');
-          const maskEle = await page.$('.ant-modal-mask');
-          // 移除警告弹窗
-          if (maskEle) {
-            console.log('has maskEle:');
-            await page.$eval('.ant-modal-mask', el => {
-              if (el.parentNode) {
-                el.parentNode.remove();
-              }
-              return el;
-            });
-          }
-          if (result) {
-            console.log('result:', result);
-            await page.$eval('#ckEditor', (el, curText) => {
-              console.log({ innerHtml: el.innerHTML, curText });
-              if (curText) {
-                console.log('curText:', curText);
-                el.innerHTML = curText;
-              }
-              return el.innerHTML;
-            }, getCurContent());
-            console.log('57☔︎');
-          } else {
-            setTimeout(async () => {
-              await setContent();
-            }, 1000)
-          }
-        }
-        // 修改富文本编辑器内容
-        await setContent();
-        console.log('65☔︎');
-        // 检测到自己增加的id
-        await page.waitForSelector('#zs-add-bs');
-        console.log('66☔︎');
-        const result = await page.$eval('#ckEditor', el => el.innerHTML);
-        console.log('result22:', result);
-        const saveRes = await page.$eval('#__activeCodeSaveBtn', el => {
-          el.click();
-          return el.innerHTML;
-        });
-        console.log('saveRes:', saveRes);
-        // 点击保存
-        // await page.click('#__activeCodeSaveBtn');
-        setTimeout(() => {
-          console.log('77☔︎');
-          browser.close();
-          resolve(getCurContent());
-        }, 16000);
-      }).catch(err => {
-        reject(err);
-      });
+      reloadPage({ page, browser, resolve });
       page.on('response', async e => {
         const url = e.url();
         if (url.includes('operateQrcodeMsg')) {
@@ -97,6 +40,76 @@ function start() {
       reject(error);
     }
   })
+}
+
+function reloadPage({ page, browser, resolve }) {
+  let flag = false;
+  page.reload({ timeout: 8000 }).then(async () => {
+    console.log('30☔︎');
+    await page.waitForSelector('#ckEditor');
+    console.log('32☔︎');
+    async function setContent() {
+      const result = await page.$eval('#ckEditor', el => el.innerHTML);
+      console.log('35☔︎');
+      const maskEle = await page.$('.ant-modal-mask');
+      // 移除警告弹窗
+      if (maskEle) {
+        console.log('has maskEle:');
+        await page.$eval('.ant-modal-mask', el => {
+          if (el.parentNode) {
+            el.parentNode.remove();
+          }
+          return el;
+        });
+      }
+      if (result) {
+        console.log('result:', result);
+        await page.$eval('#ckEditor', (el, curText) => {
+          console.log({ innerHtml: el.innerHTML, curText });
+          if (curText) {
+            console.log('curText:', curText);
+            el.innerHTML = curText;
+          }
+          return el.innerHTML;
+        }, getCurContent());
+        console.log('57☔︎');
+      } else {
+        setTimeout(async () => {
+          await setContent();
+        }, 1000)
+      }
+    }
+    // 修改富文本编辑器内容
+    await setContent();
+    console.log('65☔︎');
+    // 检测到自己增加的id
+    await page.waitForSelector('#zs-add-bs');
+    console.log('66☔︎');
+    const result = await page.$eval('#ckEditor', el => el.innerHTML);
+    console.log('result22:', result);
+    const saveRes = await page.$eval('#__activeCodeSaveBtn', el => {
+      el.click();
+      return el.innerHTML;
+    });
+    console.log('saveRes:', saveRes);
+    flag = true;
+    // 点击保存
+    // await page.click('#__activeCodeSaveBtn');
+    setTimeout(() => {
+      console.log('77☔︎');
+      browser.close();
+      resolve(getCurContent());
+    }, 16000);
+  }).catch(err => {
+    console.log('page.reload', err || err.message);
+  });
+  setTimeout(() => {
+    if (!flag && times <= 5) {
+      times++;
+      console.log('再执行', times);
+      reloadPage({ page, browser, resolve });
+    }
+  }, 16000);
 }
 
 function getCurContent() {
