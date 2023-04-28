@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer');
 const fs = require("fs");
 const codeData = require('./codeData');
 const isDebugger = false;
+let times = 0;
 
 function start() {
   return new Promise(async (resolve, reject) => {
