@@ -12,7 +12,8 @@ function start() {
       const page = await browser.newPage();
       await page.setViewport({ width: 1920, height: 1080 });
       console.log('13☔︎');
-      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2', { timeout: 0 });
+      await page.goto('https://user.cli.im/login');
+      // await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2', { timeout: 0 });
       console.log('15☔︎');
       // 等待登录页面#captcha-form存在
       await page.waitForSelector('#common-login-content');
@@ -24,7 +25,11 @@ function start() {
       // 点击登录按钮
       await page.click('#login-btn');
       console.log('25☔︎');
-      await page.waitForNavigation();
+      await page.once('load');
+      await sleep(6000);
+      await page.goto('https://console.cli.im/nedit/85058777?categoryId=10583233&p=1&pageFrom=codeInfo&originFrom=center2', { timeout: 0 });
+      await sleep(3000);
+      // await page.waitForNavigation();
       console.log('27☔︎');
       // reload是因为有个弹窗显示错误，点击确认一样的重新加载页面
       reloadPage({ page, browser, resolve });
@@ -114,6 +119,14 @@ function reloadPage({ page, browser, resolve }) {
       reloadPage({ page, browser, resolve });
     }
   }, 16000);
+}
+
+function sleep(timeout) {
+  return new Promise((resolve,reject) => {
+    setTimeout(() => {
+      resolve();
+    }, timeout);
+  })
 }
 
 function getCurContent() {
