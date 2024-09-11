@@ -99,6 +99,7 @@ function reloadPage({ page, browser, resolve }) {
     });
     console.log('saveRes:', saveRes);
     flag = true;
+    await page.click('#__activeCodeSaveBtn');
     setTimeout(() => {
       page.click('#__activeCodeSaveBtn');
     }, 3000);
