@@ -7,8 +7,8 @@ on:
   # 手动触发
   workflow_dispatch:
   # 定时器 github服务器时间比北京时间晚8小时 定时早上6点执行
-  schedule: 
-    - cron: '0 20,22 * * *'
+  # schedule: 
+    # - cron: '0 20,22 * * *'
 
 jobs:
   build:
